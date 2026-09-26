@@ -1,0 +1,13 @@
+{
+  "name": "prajaseva-backend-node",
+  "version": "1.0.0",
+  "description": "Node.js REST API Backend for Prajaseva Portal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["prajaseva", "government", "api", "node"],
+  "author": "Prajaseva Dev Team",
+  "license": "ISC"
+}

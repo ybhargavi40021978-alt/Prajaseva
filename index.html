@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prajaseva - People • Government • Together</title>
+  <meta name="description" content="Prajaseva - Government Services Portal for India Services, Schemes, Certificates, Grievances, and Application Tracking." />
+  <link rel="icon" type="image/png" href="/ap_emblem.png" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header Navigation Bar - Exact Match -->
+    <header class="header-main">
+      <div class="header-container">
+        <div class="brand-section" onclick="navigateTo('home')">
+          <div class="emblem-box">
+            <img src="/ap_emblem.png" alt="Government of India Official Emblem" class="emblem-img" />
+          </div>
+          <div class="brand-text">
+            <h1 id="brand-title">Prajaseva</h1>
+            <p id="brand-tagline">People • Government • Together</p>
+          </div>
+        </div>
+
+        <nav>
+          <ul class="nav-menu">
+            <li><a class="nav-link active" data-target="home" onclick="navigateTo('home')">Home</a></li>
+            <li><a class="nav-link" data-target="services" onclick="navigateTo('services')">Services</a></li>
+            <li><a class="nav-link" data-target="schemes" onclick="navigateTo('schemes')">Schemes</a></li>
+            <li><a class="nav-link" data-target="track-application" onclick="navigateTo('track-application')">Track Application</a></li>
+            <li><a class="nav-link" data-target="raise-grievance" onclick="navigateTo('raise-grievance')">Grievances</a></li>
+            <li><a class="nav-link" data-target="help" onclick="navigateTo('help')">Help</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <!-- Dynamic Auth Container: Citizen Profile with Data, Name & Email -->
+          <div id="header-auth-container"></div>
+
+          <div class="language-selector-wrap" title="Select portal language">
+            <i data-feather="globe" data-lucide="globe" style="width:18px;height:18px;"></i>
+            <select class="btn-lang-dropdown" id="lang-selector" aria-label="Select language" onchange="setLanguage(this.value)">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="te">తెలుగు</option>
+              <option value="ta">தமிழ்</option>
+              <option value="kn">ಕನ್ನಡ</option>
+              <option value="ml">മലയാളം</option>
+              <option value="mr">मराठी</option>
+              <option value="bn">বাংলা</option>
+            </select>
+          </div>          
+          <!-- 3 Horizontal Lines Menu Button in Last Corner -->
+          <button class="btn-hamburger" id="quick-menu-toggle" onclick="toggleQuickMenu()" title="Quick Navigation & Features Menu" aria-label="Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Quick Navigation & Features Menu Drawer (3 Horizontal Lines Menu) -->
+    <div class="quick-menu-overlay" id="quick-menu-overlay" onclick="closeQuickMenu()"></div>
+    <aside class="quick-menu-drawer" id="quick-menu-drawer">
+      <div class="drawer-header">
+        <div class="drawer-brand">
+          <img src="/ap_emblem.png" alt="AP Emblem" style="height: 38px; width: 38px; object-fit: contain;" />
+          <div>
+            <h4 style="margin: 0; font-size: 1rem; color: var(--primary-navy); font-weight: 700;">PrajaSeva Portal</h4>
+            <small style="color: var(--text-muted); font-size: 0.72rem;">Government of India</small>
+          </div>
+        </div>
+        <button class="drawer-close-btn" onclick="closeQuickMenu()" title="Close Menu">✕</button>
+      </div>
+
+      <!-- Citizen Profile / Account Snapshot -->
+      <div class="drawer-account-box" id="drawer-account-info"></div>
+
+      <!-- Features Menu List -->
+      <div class="drawer-menu-list">
+        <div class="drawer-menu-item" onclick="quickNav('home')">
+          <i data-feather="home" data-lucide="home"></i> Home Page
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('services')">
+          <i data-feather="grid" data-lucide="grid"></i> All Services Directory
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('schemes')">
+          <i data-feather="award" data-lucide="award"></i> Government Welfare Schemes
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('departments')">
+          <i data-feather="landmark" data-lucide="landmark"></i> Departments Directory
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('track-application')">
+          <i data-feather="search" data-lucide="search"></i> Track Application
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('raise-grievance')">
+          <i data-feather="message-circle" data-lucide="message-circle"></i> Spandana Grievances
+        </div>
+        <div class="drawer-menu-item" onclick="openModal('eligibility-modal'); closeQuickMenu();">
+          <i data-feather="check-square" data-lucide="check-square"></i> Check Eligibility Calculator
+        </div>
+        <div class="drawer-menu-item" onclick="openModal('guidelines-modal'); closeQuickMenu();">
+          <i data-feather="book-open" data-lucide="book-open"></i> Citizen Guidelines & FAQs
+        </div>
+        <div class="drawer-menu-item" onclick="quickNav('profile')">
+          <i data-feather="user" data-lucide="user"></i> My Citizen Profile
+        </div>
+        <div class="drawer-menu-item" onclick="toggleLanguage();">
+          <i data-feather="globe" data-lucide="globe"></i> Switch Language
+        </div>
+      </div>
+
+      <div class="drawer-footer" id="drawer-auth-footer"></div>
+    </aside>
+
+    <!-- ==================== SCREEN 1: HOME PAGE ==================== -->
+    <main class="main-view" id="view-home">
+      <!-- Hero Container with Secretariat Backdrop -->
+      <section class="hero-container">
+        <div class="hero-top-layout">
+          <div class="hero-left-text">
+            <h2 class="hero-welcome">Welcome to</h2>
+            <h1 class="hero-title-green">Prajaseva</h1>
+            <p class="hero-tagline">Your Gateway to Government Services for a Better India</p>
+
+            <!-- Floating Pill Search Bar -->
+            <div class="search-pill-bar">
+              <i data-feather="search" style="color: var(--text-light); width: 20px; height: 20px;"></i>
+              <input type="text" id="home-search-input" placeholder="Search for services, schemes or departments..." onkeypress="if(event.key==='Enter') handleHomeSearch()" />
+              <button class="btn-search-navy" onclick="handleHomeSearch()">Search</button>
+            </div>
+          </div>
+
+          <div class="hero-right-quote">
+            A Progressive India Through People's Participation
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 Action Cards Grid - Exact Colors & Labels -->
+      <section class="quick-cards-grid">
+        <div class="action-card card-blue" onclick="navigateTo('service-certificates')">
+          <div class="card-icon-circle"><i data-feather="file-text"></i></div>
+          <div class="card-text-box">
+            <div class="card-title">Get Certificates</div>
+            <div class="card-sub">Income, Caste, Residence etc.</div>
+          </div>
+          <div class="card-chevron">›</div>
+        </div>
+
+        <div class="action-card card-green" onclick="navigateTo('scheme-fee-reimbursement')">
+          <div class="card-icon-circle"><i data-feather="users"></i></div>
+          <div class="card-text-box">
+            <div class="card-title">Apply for Schemes</div>
+            <div class="card-sub">Welfare & Benefits</div>
+          </div>
+          <div class="card-chevron">›</div>
+        </div>
+
+        <div class="action-card card-orange" onclick="navigateTo('departments')" title="Department Services: Admin and Department Officer access only">
+          <div class="card-icon-circle"><i data-feather="home"></i></div>
+          <div class="card-text-box">
+            <div class="card-title">Department Services</div>
+            <div class="card-sub">Access Departmental Services</div>
+          </div>
+          <div class="card-chevron">›</div>
+        </div>
+
+        <div class="action-card card-purple" onclick="navigateTo('track-application')">
+          <div class="card-icon-circle"><i data-feather="file-text"></i></div>
+          <div class="card-text-box">
+            <div class="card-title">Track Application</div>
+            <div class="card-sub">Check Status</div>
+          </div>
+          <div class="card-chevron">›</div>
+        </div>
+      </section>
+
+      <!-- Bottom Tagline Strip Card -->
+      <section class="tagline-strip-card">
+        <div class="tagline-item">
+          <div class="tagline-icon"><i data-feather="shield"></i></div>
+          <div>
+            <div class="tagline-title">Simple</div>
+            <div class="tagline-desc">Easy to use</div>
+          </div>
+        </div>
+
+        <div class="tagline-item">
+          <div class="tagline-icon"><i data-feather="clock"></i></div>
+          <div>
+            <div class="tagline-title">Transparent</div>
+            <div class="tagline-desc">Real-time updates</div>
+          </div>
+        </div>
+
+        <div class="tagline-item">
+          <div class="tagline-icon"><i data-feather="users"></i></div>
+          <div>
+            <div class="tagline-title">For Every Citizen</div>
+            <div class="tagline-desc">Accessible to all</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ==================== SCREEN 2: SERVICES OVERVIEW ==================== -->
+    <main class="main-view" id="view-services" style="display: none;">
+      <div class="page-header">
+        <h2>Services Directory</h2>
+        <p>Access essential government services organized by citizen category</p>
+      </div>
+
+      <div class="category-grid" id="services-category-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- ==================== CERTIFICATES PORTAL ==================== -->
+    <main class="main-view" id="view-service-certificates" style="display: none;">
+      <div class="page-header">
+        <h2>Government Certificates Portal</h2>
+        <p>Apply online for official certificates issued by Revenue & Municipal Departments</p>
+      </div>
+
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-revenue"><i data-feather="file-text" data-lucide="file-text"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Integrated Income Certificate</div>
+            <div class="category-card-subtitle">Annual family income certificate for scholarship & Meeseva</div>
+            <span class="badge badge-info">Revenue Dept</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-education"><i data-feather="shield" data-lucide="shield"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Integrated Caste Certificate</div>
+            <div class="category-card-subtitle">Community & Caste certificate (SC/ST/BC/EBC/Kapu)</div>
+            <span class="badge badge-success">Revenue Dept</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-transport"><i data-feather="map-pin" data-lucide="map-pin"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Residence & Nativity Certificate</div>
+            <div class="category-card-subtitle">Proof of local residence in India</div>
+            <span class="badge badge-warning">Revenue Dept</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-health"><i data-feather="heart" data-lucide="heart"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Birth Certificate</div>
+            <div class="category-card-subtitle">Official registration & digital birth certificate issuance</div>
+            <span class="badge badge-info">Municipal Admin</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-agriculture"><i data-feather="map" data-lucide="map"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Webland 1B & Adangal Extract</div>
+            <div class="category-card-subtitle">Official digital land records and mutation verification</div>
+            <span class="badge badge-success">Revenue Webland</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-municipal"><i data-feather="droplet" data-lucide="droplet"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Municipal Water & Tap Connection</div>
+            <div class="category-card-subtitle">Civic pipeline approval & meter certificate</div>
+            <span class="badge badge-warning">MA&UD Dept</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== SCHEMES DIRECTORY PAGE ==================== -->
+    <main class="main-view" id="view-schemes" style="display: none;">
+      <div class="page-header">
+        <h2>Government Welfare Schemes</h2>
+        <p>Explore all major welfare schemes of the Government of India</p>
+      </div>
+
+      <div class="category-grid" id="schemes-catalog-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- ==================== DEDICATED SCHEME: FEE REIMBURSEMENT ==================== -->
+    <main class="main-view" id="view-scheme-fee-reimbursement" style="display: none;">
+      <div class="main-content-card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-navy); font-size: 1.75rem;">Fee Reimbursement (Jagananna Vidya Deevena)</h2>
+            <p style="color: var(--text-muted);">Full Tuition Fee Waiver Scheme for Eligible Post-Matric Students</p>
+          </div>
+          <button class="btn-primary" onclick="navigateTo('apply-scheme')">
+            Apply Now <i data-feather="arrow-right" data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scheme Navigation Tabs -->
+      <div class="scheme-tabs-row">
+        <div class="tab-item active" onclick="switchSchemeTab('overview', this)">Overview</div>
+        <div class="tab-item" onclick="switchSchemeTab('eligibility', this)">Eligibility</div>
+        <div class="tab-item" onclick="switchSchemeTab('documents', this)">Documents</div>
+        <div class="tab-item" onclick="switchSchemeTab('how-to-apply', this)">How to Apply</div>
+        <div class="tab-item" onclick="switchSchemeTab('contact', this)">Help & Contact</div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="main-content-card" id="scheme-tab-content">
+          <!-- Rendered via main.js switchSchemeTab -->
+        </div>
+        <div class="sidebar-card">
+          <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Quick Actions</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTo('apply-scheme')">
+              <i data-feather="edit-3" data-lucide="pen-tool"></i> Apply Now
+            </button>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="openModal('guidelines-modal')">
+              <i data-feather="file-text" data-lucide="file-text"></i> Download Guidelines
+            </button>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="openModal('eligibility-modal')">
+              <i data-feather="check-square" data-lucide="check-square"></i> Check Eligibility
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== DEDICATED SCHEME: YSR AAROGYASRI ==================== -->
+    <main class="main-view" id="view-scheme-aarogyasri" style="display: none;">
+      <div class="main-content-card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-navy); font-size: 1.75rem;">YSR Aarogyasri Health Scheme</h2>
+            <p style="color: var(--text-muted);">Cashless Super-Specialty Medical Treatment Up to ₹5 Lakhs per family per year</p>
+          </div>
+          <button class="btn-primary" onclick="navigateTo('apply-scheme')">
+            Apply for Health Card <i data-feather="arrow-right" data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="main-content-card">
+          <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Scheme Highlights & Covered Procedures</h3>
+          <p style="color: var(--text-dark); line-height: 1.7; margin-bottom: 1.5rem;">
+            Dr. YSR Aarogyasri is the flagship healthcare scheme of the Government of India providing comprehensive cashless hospitalization and surgical treatment to low and middle-income families across 2,400+ medical and surgical procedures.
+          </p>
+          <div class="benefit-cards-grid">
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#e0f2fe; color:#0284c7;"><i data-feather="activity" data-lucide="activity"></i></div>
+              <h4>2,400+ Procedures</h4>
+              <p>Comprehensive coverage</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#dcfce7; color:#15803d;"><i data-feather="shield" data-lucide="shield"></i></div>
+              <h4>₹5 Lakhs / Year</h4>
+              <p>Cashless treatment limit</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#fef3c7; color:#b45309;"><i data-feather="plus-circle" data-lucide="plus-circle"></i></div>
+              <h4>Network Hospitals</h4>
+              <p>Both Govt & Empaneled Private</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Key Network Hospitals</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+            <div style="background: var(--bg-page); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+              🏥 <strong>GGH Vijayawada</strong><br/><span style="color:var(--text-muted); font-size:0.8rem;">Super Specialty Government Hospital</span>
+            </div>
+            <div style="background: var(--bg-page); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+              🏥 <strong>Apollo Hospitals</strong><br/><span style="color:var(--text-muted); font-size:0.8rem;">Visakhapatnam & Nellore</span>
+            </div>
+            <div style="background: var(--bg-page); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+              🏥 <strong>RIMS Hospital</strong><br/><span style="color:var(--text-muted); font-size:0.8rem;">Kadapa & Ongole</span>
+            </div>
+            <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;" onclick="navigateTo('apply-scheme')">
+              Card Registration
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== DEDICATED SCHEME: YSR RYTHU BHAROSA ==================== -->
+    <main class="main-view" id="view-scheme-rythu-bharosa" style="display: none;">
+      <div class="main-content-card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-navy); font-size: 1.75rem;">YSR Rythu Bharosa - PM Kisan</h2>
+            <p style="color: var(--text-muted);">Annual Financial Assistance of ₹13,500 for Land Owning & Tenant Farmers</p>
+          </div>
+          <button class="btn-primary" onclick="navigateTo('apply-scheme')">
+            Apply for Rythu Bharosa <i data-feather="arrow-right" data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="main-content-card">
+          <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Direct Benefit Details</h3>
+          <p style="color: var(--text-dark); line-height: 1.7; margin-bottom: 1.5rem;">
+            YSR Rythu Bharosa provides direct financial assistance to each eligible farming family in three installments before Kharif sowing, Rabi sowing, and Sankranti harvest to alleviate cultivation costs.
+          </p>
+          <div class="benefit-cards-grid">
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#dcfce7; color:#15803d;"><i data-feather="sun" data-lucide="sun"></i></div>
+              <h4>₹7,500 (May)</h4>
+              <p>Installment 1 - Kharif Preparation</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#e0f2fe; color:#0284c7;"><i data-feather="cloud-rain" data-lucide="cloud-rain"></i></div>
+              <h4>₹4,000 (October)</h4>
+              <p>Installment 2 - Rabi Crop</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-card-icon" style="background:#fef3c7; color:#b45309;"><i data-feather="award" data-lucide="award"></i></div>
+              <h4>₹2,000 (January)</h4>
+              <p>Installment 3 - Harvest Festival</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Farmer Support</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTo('apply-scheme')">Farmer Registration</button>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="navigateTo('dept-agriculture')">Rythu Bharosa Kendras (RBK)</button>
+            <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="navigateTo('track-application')">Payment Status Check</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== HELP & SUPPORT ==================== -->
+    <main class="main-view" id="view-help" style="display: none;">
+      <div class="page-header">
+        <span class="eyebrow">Citizen Support</span>
+        <h2>Help & Support</h2>
+        <p>Get guidance for using PrajaSeva, tracking applications, submitting grievances, and accessing portal services.</p>
+      </div>
+
+      <div class="category-grid">
+        <div class="category-card" onclick="openModal('guidelines-modal')">
+          <div class="category-card-icon service-logo-box logo-revenue"><i data-feather="book-open" data-lucide="book-open"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Frequently Asked Questions</div>
+            <div class="category-card-subtitle">Learn how to register, apply for services, track applications, and raise grievances.</div>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('track-application')">
+          <div class="category-card-icon service-logo-box logo-education"><i data-feather="search" data-lucide="search"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Application Help</div>
+            <div class="category-card-subtitle">Use your application reference to check the latest status and processing stage.</div>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('raise-grievance')">
+          <div class="category-card-icon service-logo-box logo-health"><i data-feather="message-circle" data-lucide="message-circle"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Grievance Support</div>
+            <div class="category-card-subtitle">Report an issue and follow its resolution through the grievance workflow.</div>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card">
+          <div class="category-card-icon service-logo-box logo-municipal"><i data-feather="phone" data-lucide="phone"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Contact Support</div>
+            <div class="category-card-subtitle">Government portal helpline: 1100. Keep your application or grievance reference ready.</div>
+          </div>
+          <div class="category-card-arrow">☎</div>
+        </div>
+      </div>
+
+      <div class="dashboard-panel" style="margin-top:1.5rem;">
+        <h3>How can we help?</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;">
+          <div><strong>1. Find a service</strong><p>Use Services or search from the home page.</p></div>
+          <div><strong>2. Apply online</strong><p>Sign in and submit the required information and documents.</p></div>
+          <div><strong>3. Track progress</strong><p>Open Track Application and enter your reference number.</p></div>
+          <div><strong>4. Need assistance?</strong><p>Use the FAQs or raise a grievance when an issue needs official action.</p></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== DEPARTMENT SERVICES DIRECTORY ==================== -->
+    <main class="main-view" id="view-departments" style="display: none;">
+      <div class="page-header">
+        <h2>Government Departments Directory</h2>
+        <p>Select a department to view its specific online services</p>
+      </div>
+
+      <div class="category-grid" id="departments-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- ==================== INDIVIDUAL DEPARTMENT VIEWS ==================== -->
+    <!-- 1. Revenue Department -->
+    <main class="main-view" id="view-dept-revenue" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Revenue & Land Records Department</h2>
+        <p>Official citizen services for certificates, webland 1B adangal, and land records verification.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('service-certificates')">
+          <div class="category-card-icon service-logo-box logo-revenue"><i data-feather="file-text" data-lucide="file-text"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Integrated Caste & Income Certificates</div>
+            <div class="category-card-subtitle">Official certificates issued under Meeseva & Ward Secretariat</div>
+            <span class="badge badge-success">SLA: 7 Days</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-agriculture"><i data-feather="map" data-lucide="map"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Webland 1B & Adangal Extract</div>
+            <div class="category-card-subtitle">Digital land records mutation and title ownership verification</div>
+            <span class="badge badge-info">Online Instant</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-transport"><i data-feather="home" data-lucide="home"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Residence & Nativity Certificate</div>
+            <div class="category-card-subtitle">Proof of continuous residence within India mandals</div>
+            <span class="badge badge-warning">SLA: 5 Days</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 2. Education Department -->
+    <main class="main-view" id="view-dept-education" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Higher Education & Schools Department</h2>
+        <p>Scholarship disbursements, post-matric fee reimbursement, and academic certificates.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('scheme-fee-reimbursement')">
+          <div class="category-card-icon service-logo-box logo-education"><i data-feather="book-open" data-lucide="graduation-cap"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Jagananna Vidya Deevena (Fee Reimbursement)</div>
+            <div class="category-card-subtitle">100% Tuition fee support for technical and collegiate students</div>
+            <span class="badge badge-success">Open for 2026-27</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-education"><i data-feather="award" data-lucide="award"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Jagananna Vasathi Deevena</div>
+            <div class="category-card-subtitle">Hostel and accommodation allowance of ₹20,000 per year</div>
+            <span class="badge badge-info">Quarterly DBT</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 3. Health Department -->
+    <main class="main-view" id="view-dept-health" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Health, Medical & Family Welfare Department</h2>
+        <p>Universal health card management, Chief Minister Relief Fund, and hospital services.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('scheme-aarogyasri')">
+          <div class="category-card-icon service-logo-box logo-health"><i data-feather="activity" data-lucide="heart-pulse"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">YSR Aarogyasri Health Scheme</div>
+            <div class="category-card-subtitle">Free healthcare access across all empaneled hospitals</div>
+            <span class="badge badge-success">₹5 Lakh Coverage</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-health"><i data-feather="file-plus" data-lucide="file-plus"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Chief Minister Relief Fund (CMRF) Medical Claim</div>
+            <div class="category-card-subtitle">Financial grant for critical treatments not covered in standard lists</div>
+            <span class="badge badge-info">Direct Sanction</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 4. Municipal Department -->
+    <main class="main-view" id="view-dept-municipal" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Municipal Administration & Urban Development</h2>
+        <p>Property tax payments, birth/death records, water tap approvals, and civic amenities.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-municipal"><i data-feather="home" data-lucide="landmark"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Property Tax Assessment & Pay Online</div>
+            <div class="category-card-subtitle">Instant tax assessment, door-to-door verification & receipts</div>
+            <span class="badge badge-info">Active</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('raise-grievance')">
+          <div class="category-card-icon service-logo-box logo-municipal"><i data-feather="tool" data-lucide="wrench"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Civic Complaints & Water Supply Grievance</div>
+            <div class="category-card-subtitle">Lodge complaints regarding municipal pipeline leaks or sanitation</div>
+            <span class="badge badge-warning">24hr Redressal</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 5. Agriculture Department -->
+    <main class="main-view" id="view-dept-agriculture" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Agriculture & Cooperation Department</h2>
+        <p>Farmer welfare, crop insurance enrollment, seed subsidies, and RBK services.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('scheme-rythu-bharosa')">
+          <div class="category-card-icon service-logo-box logo-agriculture"><i data-feather="sun" data-lucide="sprout"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">YSR Rythu Bharosa - PM Kisan</div>
+            <div class="category-card-subtitle">₹13,500 annual incentive deposited directly to bank accounts</div>
+            <span class="badge badge-success">₹13,500 / Yr</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-agriculture"><i data-feather="check-circle" data-lucide="check-circle"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Free e-Crop Insurance Verification</div>
+            <div class="category-card-subtitle">Verify village secretariat e-crop bookings for 100% natural calamity cover</div>
+            <span class="badge badge-info">Zero Premium</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 6. Transport Department -->
+    <main class="main-view" id="view-dept-transport" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Transport & Road Safety Department</h2>
+        <p>Driving license tests, LLR booking, RC transfer, and vehicle registration renewals.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-transport"><i data-feather="truck" data-lucide="car"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Learner's License (LLR) Slot Booking</div>
+            <div class="category-card-subtitle">Book online driving knowledge test slot at your nearest RTO / Meeseva</div>
+            <span class="badge badge-info">Instant Slot</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-transport"><i data-feather="file-text" data-lucide="file-text"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">Driving License Renewal & Address Change</div>
+            <div class="category-card-subtitle">Paperless renewal of valid motor vehicle driving licenses</div>
+            <span class="badge badge-success">Faceless Service</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 7. Housing Department -->
+    <main class="main-view" id="view-dept-housing" style="display: none;">
+      <div class="page-header">
+        <a href="#" onclick="navigateTo('departments'); return false;" style="font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">‹ Back to All Departments</a>
+        <h2 style="margin-top: 0.5rem;">Housing & Urban Infrastructure</h2>
+        <p>Navaratnalu Pedalandarikki Illu, house site pattas, and construction subsidy tracking.</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" onclick="navigateTo('apply-scheme')">
+          <div class="category-card-icon service-logo-box logo-housing"><i data-feather="home" data-lucide="home"></i></div>
+          <div class="category-card-content">
+            <div class="category-card-title">YSR Jagananna Housing Colonies Allotment</div>
+            <div class="category-card-subtitle">Check house sanction status and patta registration records</div>
+            <span class="badge badge-success">Pedalandarikki Illu</span>
+          </div>
+          <div class="category-card-arrow">›</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== SCREEN 5: MULTI-STEP APPLICATION FORM ==================== -->
+    <main class="main-view" id="view-apply-scheme" style="display: none;">
+      <div class="page-header" style="text-align: center;">
+        <h2>Apply for Fee Reimbursement</h2>
+        <p>Fill out the application form carefully with valid citizen credentials</p>
+      </div>
+
+      <div class="stepper-wrapper">
+        <div class="stepper-line"><div class="stepper-line-progress" id="step-progress-bar"></div></div>
+        
+        <div class="step-item active" id="step-node-1" onclick="goToStep(1)">
+          <div class="step-circle">1</div>
+          <div class="step-title">Personal Details</div>
+        </div>
+        <div class="step-item" id="step-node-2" onclick="goToStep(2)">
+          <div class="step-circle">2</div>
+          <div class="step-title">Education Details</div>
+        </div>
+        <div class="step-item" id="step-node-3" onclick="goToStep(3)">
+          <div class="step-circle">3</div>
+          <div class="step-title">Documents</div>
+        </div>
+        <div class="step-item" id="step-node-4" onclick="goToStep(4)">
+          <div class="step-circle">4</div>
+          <div class="step-title">Preview & Submit</div>
+        </div>
+      </div>
+
+      <div class="main-content-card" style="max-width: 840px; margin: 0 auto;">
+        <form id="fee-application-form" onsubmit="event.preventDefault();">
+          <!-- STEP 1 -->
+          <div class="step-section" id="form-step-1">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1.25rem;">Personal Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" class="form-control" id="app-fullname" placeholder="Enter full name" required />
+              </div>
+              <div class="form-group">
+                <label>Date of Birth *</label>
+                <input type="date" class="form-control" id="app-dob" required />
+              </div>
+              <div class="form-group">
+                <label>Aadhaar Number *</label>
+                <input type="text" class="form-control" id="app-aadhaar" placeholder="Enter 12 digit Aadhaar number" maxlength="14" required />
+              </div>
+              <div class="form-group">
+                <label>Mobile Number *</label>
+                <input type="tel" class="form-control" id="app-mobile" placeholder="Enter 10 digit mobile number" maxlength="10" required />
+              </div>
+              <div class="form-group full-width">
+                <label>Email Address *</label>
+                <input type="email" class="form-control" id="app-email" placeholder="Enter email address" required />
+              </div>
+            </div>
+
+            <div class="form-actions-row">
+              <button class="btn-primary" onclick="goToStep(2)">Next ›</button>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="step-section" id="form-step-2" style="display: none;">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1.25rem;">Educational Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>College Name *</label>
+                <input type="text" class="form-control" id="app-college" placeholder="Enter college name" required />
+              </div>
+              <div class="form-group">
+                <label>Course Name *</label>
+                <select class="form-control" id="app-course">
+                  <option value="B.Tech Computer Science" selected>B.Tech Computer Science & Engineering</option>
+                  <option value="MBA">MBA (Master of Business Admin)</option>
+                  <option value="MCA">MCA (Computer Applications)</option>
+                  <option value="Diploma in Engineering">Diploma in Engineering</option>
+                  <option value="B.Sc / B.Com Degree">B.Sc / B.Com Degree</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label>Annual Family Income (₹) *</label>
+                <input type="number" class="form-control" id="app-income" placeholder="e.g. 150000" required />
+              </div>
+            </div>
+
+            <div class="form-actions-row">
+              <button class="btn-secondary" onclick="goToStep(1)">‹ Previous</button>
+              <button class="btn-primary" onclick="goToStep(3)">Next ›</button>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="step-section" id="form-step-3" style="display: none;">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1.25rem;">Documents Upload</h3>
+            <div class="form-group full-width" style="margin-bottom: 1.25rem;">
+              <label>1. Aadhaar Card Copy *</label>
+              <input type="file" class="form-control" id="file-aadhaar-input" onchange="updateFileLabel('file-aadhaar-input', 'file-aadhaar-label')" />
+              <span id="file-aadhaar-label" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">PDF or JPG (Max 2MB)</span>
+            </div>
+
+            <div class="form-group full-width" style="margin-bottom: 1.25rem;">
+              <label>2. Income Certificate *</label>
+              <input type="file" class="form-control" id="file-income-input" onchange="updateFileLabel('file-income-input', 'file-income-label')" />
+              <span id="file-income-label" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Issued by Revenue Department / Meeseva</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label>3. 10th / SSC Marks Memo *</label>
+              <input type="file" class="form-control" id="file-marks-input" onchange="updateFileLabel('file-marks-input', 'file-marks-label')" />
+              <span id="file-marks-label" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Proof of Date of Birth & Schooling</span>
+            </div>
+
+            <div class="form-actions-row">
+              <button class="btn-secondary" onclick="goToStep(2)">‹ Previous</button>
+              <button class="btn-primary" onclick="goToStep(4)">Next ›</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: PREVIEW & SUBMIT -->
+          <div class="step-section" id="form-step-4" style="display: none;">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 0.5rem;">Preview & Submit Application</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Please review your submitted information before final confirmation.</p>
+
+            <div class="preview-summary-card">
+              <div class="preview-item">
+                <span class="preview-label">Full Name:</span>
+                <span class="preview-value" id="prev-name">-</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Aadhaar Number:</span>
+                <span class="preview-value" id="prev-aadhaar">-</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Mobile Number:</span>
+                <span class="preview-value" id="prev-mobile">-</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">College Name:</span>
+                <span class="preview-value" id="prev-college">-</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Enrolled Course:</span>
+                <span class="preview-value" id="prev-course">-</span>
+              </div>
+              <div class="preview-item">
+                <span class="preview-label">Annual Family Income:</span>
+                <span class="preview-value" id="prev-income">-</span>
+              </div>
+            </div>
+
+            <div class="form-actions-row">
+              <button class="btn-secondary" onclick="goToStep(3)">‹ Previous</button>
+              <button class="btn-primary" style="background-color: var(--primary-green);" onclick="submitFeeApplication()">
+                <i data-feather="check-circle" data-lucide="check-circle"></i> Submit Application
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- ==================== SCREEN 6: TRACK YOUR APPLICATION ==================== -->
+    <main class="main-view" id="view-track-application" style="display: none;">
+      <div class="page-header" style="text-align: center;">
+        <h2>Track Your Application</h2>
+        <p>Enter your application reference number to check live processing status</p>
+      </div>
+
+      <div class="main-content-card" style="max-width: 800px; margin: 0 auto 2rem;">
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.95rem;">Application Number *</label>
+          <input type="text" class="form-control" id="track-app-input" placeholder="Enter application number (e.g. APFEES12345678)" />
+        </div>
+
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="performApplicationTracking()">
+          Track Status
+        </button>
+      </div>
+
+      <div class="main-content-card" id="track-result-card" style="max-width: 900px; margin: 0 auto; display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy);" id="result-scheme-name">Fee Reimbursement</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted);" id="result-app-id">Application Number: <strong>-</strong></p>
+          </div>
+          <span class="badge badge-info" id="result-status-badge">Submitted</span>
+        </div>
+
+        <div class="timeline-stepper" id="application-timeline-nodes">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== SCREEN 7: RAISE GRIEVANCE ==================== -->
+    <main class="main-view" id="view-raise-grievance" style="display: none;">
+      <div class="page-header" style="text-align: center;">
+        <h2>Lodge Citizen Grievance</h2>
+        <p>Register your grievance or civic issue directly with the Government Secretariat</p>
+      </div>
+
+      <div class="main-content-card" style="max-width: 800px; margin: 0 auto;">
+        <form onsubmit="event.preventDefault(); submitGrievance();">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Target Department *</label>
+              <select class="form-control" id="grv-dept" required>
+                <option value="Municipal Administration" selected>Municipal Administration</option>
+                <option value="Revenue Department">Revenue Department</option>
+                <option value="Education Department">Education Department</option>
+                <option value="Health Department">Health Department</option>
+                <option value="Agriculture Department">Agriculture Department</option>
+                <option value="Transport Department">Transport Department</option>
+                <option value="Civil Supplies">Civil Supplies</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Grievance Subject *</label>
+              <input type="text" class="form-control" id="grv-subject" placeholder="e.g. Drinking Water Supply Interruption" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label>Detailed Description of the Issue *</label>
+              <textarea class="form-control" id="grv-description" rows="4" placeholder="Provide complete facts, location, street name, and nature of the grievance" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>District & Mandal *</label>
+              <input type="text" class="form-control" id="grv-location" placeholder="e.g. NTR District, Vijayawada Urban" required />
+            </div>
+
+            <div class="form-group">
+              <label>Urgency Level *</label>
+              <select class="form-control" id="grv-urgency">
+                <option value="Normal">Normal (Standard 7 Days SLA)</option>
+                <option value="High">High (Immediate Secretariat Escalation)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions-row">
+            <button class="btn-primary" type="submit" style="padding: 0.8rem 2rem;">
+              <i data-feather="send" data-lucide="send"></i> Submit Grievance
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- ==================== SCREEN 8: GRIEVANCE STATUS ==================== -->
+    <main class="main-view" id="view-grievance-status" style="display: none;">
+      <div class="page-header" style="text-align: center;">
+        <h2>Grievance Live Status Tracker</h2>
+        <p>Live progress tracking and officer assignment for your registered ticket</p>
+      </div>
+
+      <div class="main-content-card" style="max-width: 860px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Grievance Ticket ID</div>
+            <h3 style="font-family: var(--font-heading); color: var(--primary-navy); font-size: 1.5rem;" id="grv-display-id">-</h3>
+            <p style="font-size: 0.9rem; color: var(--text-dark); margin-top: 0.25rem;" id="grv-display-subj">No Grievance Selected</p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge badge-warning" id="grv-display-badge">-</span>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;" id="grv-display-date">-</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-page); padding: 1rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); margin-bottom: 2rem; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div><strong>Department:</strong> <span id="grv-display-dept">-</span></div>
+          <div><strong>Officer:</strong> <span id="grv-display-officer">-</span></div>
+        </div>
+
+        <h4 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1.25rem;">Processing Timeline</h4>
+        <div class="timeline-stepper" id="grievance-stepper-nodes" style="margin-bottom: 2.5rem;">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <h4 style="font-family: var(--font-heading); color: var(--primary-navy); margin-bottom: 1rem;">Official Action Updates</h4>
+        <div class="updates-timeline" id="grievance-updates-log" style="margin-bottom: 2rem;">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button class="btn-secondary" onclick="navigateTo('raise-grievance')">Lodge Another Grievance</button>
+          <button class="btn-primary" onclick="navigateTo('profile')">View in My Profile</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== SCREEN 9: CITIZEN MY PROFILE ==================== -->
+    <main class="main-view" id="view-profile" style="display: none;">
+      <div class="page-header">
+        <h2>My Citizen Profile</h2>
+        <p>Manage your personal profile and submitted applications</p>
+      </div>
+
+      <div id="profile-view-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+
+    <!-- ==================== ROLE-SPECIFIC DASHBOARDS ==================== -->
+    <main class="main-view role-dashboard-view" id="view-department-dashboard" style="display: none;">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Department Workspace</span>
+          <h2>Department Operations Dashboard</h2>
+          <p>Review and process applications and grievances assigned to your department.</p>
+        </div>
+        <span class="role-pill role-department">Department Officer</span>
+      </div>
+      <div id="department-dashboard-content" class="role-dashboard-content">
+        <div class="dashboard-loading">Loading department records…</div>
+      </div>
+    </main>
+
+    <main class="main-view role-dashboard-view" id="view-admin-dashboard" style="display: none;">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Administration</span>
+          <h2>PrajaSeva Administration Dashboard</h2>
+          <p>Monitor portal activity, applications, grievances and department performance.</p>
+        </div>
+        <span class="role-pill role-admin">Administrator</span>
+      </div>
+      <div id="admin-dashboard-content" class="role-dashboard-content">
+        <div class="dashboard-loading">Loading administrative records…</div>
+      </div>
+    </main>
+
+    <footer class="footer-main">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <h2>Prajaseva</h2>
+          <p>Official Government Services Portal of India. Enabling transparent, accessible, and citizen-centric governance.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Services</h4>
+          <ul>
+            <li><a href="#" onclick="navigateTo('service-certificates')">Certificates</a></li>
+            <li><a href="#" onclick="navigateTo('scheme-fee-reimbursement')">Fee Reimbursement</a></li>
+            <li><a href="#" onclick="navigateTo('departments')">Department Directory</a></li>
+            <li><a href="#" onclick="navigateTo('track-application')">Track Application</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#" onclick="navigateTo('track-application')">Track Application</a></li>
+            <li><a href="#">Toll Free Helpline: 1100</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Government Links</h4>
+          <ul>
+            <li><a href="#">AP State Portal</a></li>
+            <li><a href="#">AP Secretariat</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Government of India. All rights reserved.</span>
+        <span>Privacy Policy | Terms of Service</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow" style="margin-bottom: 0;">Authentication</span>
+          <h3 id="login-modal-title" style="margin-top: 0.15rem;">Login to PrajaSeva</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('login-modal')" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); performCitizenLogin();">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="login-role">Login As *</label>
+            <select class="form-control" id="login-role" required onchange="updateLoginRoleLabels()">
+              <option value="citizen">Citizen</option>
+              <option value="department">Department Officer</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label id="login-credential-label" for="login-credential">Email / Registered Mobile / Aadhaar *</label>
+            <input type="text" class="form-control" id="login-credential" placeholder="Enter email, Aadhaar or registered mobile" required autocomplete="username" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label id="login-password-label" for="login-password">Enter Password / OTP *</label>
+            <div class="password-input-wrapper">
+              <input type="password" class="form-control" id="login-password" placeholder="Enter Password or OTP" required autocomplete="current-password" />
+              <button type="button" class="btn-password-toggle" onclick="togglePasswordVisibility('login-password', this)" aria-label="Show password" title="Show password">
+                <i data-feather="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-primary" type="submit" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem;">
+            Verify & Login
+          </button>
+          
+          <div class="auth-switch-link" id="login-register-link-box">
+            <span>New citizen? </span>
+            <a href="#" onclick="openRegisterFromLogin(); return false;">Register here</a>
+          </div>
+
+          <p id="login-role-hint" style="margin:0.85rem 0 0; color:var(--text-muted); font-size:0.82rem; text-align:center;">Citizen access includes services, applications, grievances and profile.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Citizen Registration Modal -->
+  <div class="modal-overlay" id="register-modal">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow" style="margin-bottom: 0;">Citizen Portal</span>
+          <h3 style="margin-top: 0.15rem;">Citizen Registration</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('register-modal')" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); performCitizenRegistration();">
+          <div class="reg-form-grid">
+            <div class="form-group">
+              <label for="reg-firstname">First Name *</label>
+              <input type="text" class="form-control" id="reg-firstname" placeholder="Enter first name" required />
+            </div>
+            <div class="form-group">
+              <label for="reg-lastname">Last Name *</label>
+              <input type="text" class="form-control" id="reg-lastname" placeholder="Enter last name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Mobile Number *</label>
+              <input type="tel" class="form-control" id="reg-phone" placeholder="10-digit mobile number" maxlength="10" required />
+            </div>
+            <div class="form-group">
+              <label for="reg-email">Email Address *</label>
+              <input type="email" class="form-control" id="reg-email" placeholder="name@example.com" required autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+              <label for="reg-state">State *</label>
+              <select class="form-control" id="reg-state" required>
+                <option value="">Select State</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Other">Other State / UT</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reg-district">District *</label>
+              <input type="text" class="form-control" id="reg-district" placeholder="Enter your district" required />
+            </div>
+
+            <div class="form-group">
+              <label for="reg-dob">Date of Birth</label>
+              <input type="date" class="form-control" id="reg-dob" />
+            </div>
+            <div class="form-group">
+              <label for="reg-address">Address</label>
+              <input type="text" class="form-control" id="reg-address" placeholder="House / Street / Locality" />
+            </div>
+
+            <div class="form-group">
+              <label for="reg-password">Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" class="form-control" id="reg-password" placeholder="Create password (min 6 chars)" required minlength="6" autocomplete="new-password" />
+                <button type="button" class="btn-password-toggle" onclick="togglePasswordVisibility('reg-password', this)" aria-label="Show password" title="Show password">
+                  <i data-feather="eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-confirm-password">Confirm Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" class="form-control" id="reg-confirm-password" placeholder="Re-enter password" required minlength="6" autocomplete="new-password" />
+                <button type="button" class="btn-password-toggle" onclick="togglePasswordVisibility('reg-confirm-password', this)" aria-label="Show password" title="Show password">
+                  <i data-feather="eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="reg-form-full" style="margin-top: 0.5rem;">
+              <button class="btn-primary" type="submit" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem;">
+                Register
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-switch-link" style="margin-top: 1rem;">
+            <span>Already have an account? </span>
+            <a href="#" onclick="openLoginFromRegister(); return false;">Login here</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="submission-success-modal">
+    <div class="modal-card">
+      <div class="modal-header" style="background-color: #dcfce7;">
+        <h3 style="color: #15803d;">Application Submitted Successfully!</h3>
+        <button class="modal-close" onclick="closeModal('submission-success-modal')">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div style="width: 60px; height: 60px; border-radius: 999px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.8rem;">
+          ✓
+        </div>
+        <p style="font-size: 1.05rem; margin-bottom: 0.5rem;">Your application has been submitted successfully.</p>
+        <div style="background-color: var(--bg-page); padding: 0.85rem; border-radius: var(--radius-md); font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 1.5rem;" id="generated-app-id">
+          -
+        </div>
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="closeModal('submission-success-modal'); navigateTo('track-application');">
+          Track This Application Status ›
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="edit-profile-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Edit Citizen Profile</h3>
+        <button class="modal-close" onclick="closeModal('edit-profile-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); saveProfileChanges();">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>Full Name *</label>
+            <input type="text" class="form-control" id="edit-prof-name" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>Email Address *</label>
+            <input type="email" class="form-control" id="edit-prof-email" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>Mobile Number *</label>
+            <input type="tel" class="form-control" id="edit-prof-phone" maxlength="10" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>District & Mandal *</label>
+            <input type="text" class="form-control" id="edit-prof-district" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>Residential Address *</label>
+            <textarea class="form-control" id="edit-prof-address" rows="3" required></textarea>
+          </div>
+          <button class="btn-primary" type="submit" style="width: 100%; justify-content: center; padding: 0.85rem;">
+            Save Profile Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eligibility Check Modal -->
+  <div class="modal-overlay" id="eligibility-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Check Scheme Eligibility</h3>
+        <button class="modal-close" onclick="closeModal('eligibility-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="event.preventDefault(); checkEligibilityResult();">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>Select Category *</label>
+            <select class="form-control" id="elig-category" required>
+              <option value="SC">SC (Scheduled Caste)</option>
+              <option value="ST">ST (Scheduled Tribe)</option>
+              <option value="BC">BC (Backward Classes)</option>
+              <option value="EBC">EBC / Kapu</option>
+              <option value="Minority">Minority</option>
+              <option value="General">General / Others</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label>Annual Family Income (₹) *</label>
+            <input type="number" class="form-control" id="elig-income" placeholder="e.g. 180000" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>College Attendance (%) *</label>
+            <input type="number" class="form-control" id="elig-attendance" placeholder="e.g. 80" min="0" max="100" required />
+          </div>
+          <button class="btn-primary" type="submit" style="width: 100%; justify-content: center; padding: 0.85rem;">
+            Verify Eligibility
+          </button>
+        </form>
+        <div id="elig-result" style="display: none; margin-top: 1.25rem; padding: 1rem; border-radius: var(--radius-md); background: #dcfce7; border: 1px solid #bbf7d0; color: #166534;">
+          <h4 style="font-weight: 700; margin-bottom: 0.25rem;">✓ Congratulations! You are Eligible</h4>
+          <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Your family income and attendance satisfy all eligibility norms for 100% Fee Reimbursement.</p>
+          <button class="btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="closeModal('eligibility-modal'); navigateTo('apply-scheme');">Proceed to Apply ›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guidelines Modal -->
+  <div class="modal-overlay" id="guidelines-modal">
+    <div class="modal-card" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3>Government Guidelines & Criteria</h3>
+        <button class="modal-close" onclick="closeModal('guidelines-modal')">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+        <h4 style="color: var(--primary-navy); margin-bottom: 0.5rem;">Jagananna Vidya Deevena Guidelines</h4>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Government Order (G.O.Ms.No. 115) Higher Education Department</p>
+        <ul style="padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.8; color: var(--text-dark); margin-bottom: 1.5rem;">
+          <li>Tuition fee reimbursement is provided directly to the bank accounts of mother / natural guardian of the student in four quarterly installments.</li>
+          <li>Valid Income Certificate issued through Prajaseva / Meeseva portal is mandatory.</li>
+          <li>A minimum biometric or facial attendance of 75% across the semester is strictly enforced for fee sanction.</li>
+          <li>Applicable to ITI, Polytechnic, Degree, Engineering, Medicine, Pharmacy, MBA, and MCA courses.</li>
+          <li>Family landholding limits: Below 10 Acres Wetland or 25 Acres Dryland.</li>
+        </ul>
+        <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="closeModal('guidelines-modal')">Close Guidelines</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry Script -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
