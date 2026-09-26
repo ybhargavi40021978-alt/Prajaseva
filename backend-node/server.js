@@ -201,7 +201,8 @@ const server = http.createServer(async (req, res) => {
 
   try {
     // 1. Health check
-    if ((pathname === '/' || pathname === '/api/health') && method === 'GET') {
+    const hasDist = fs.existsSync(path.join(__dirname, '..', 'dist', 'index.html'));
+    if ((pathname === '/api/health' || (pathname === '/' && !hasDist)) && method === 'GET') {
       return sendJson(res, 200, {
         status: "healthy",
         service: "PrajaSeva Enterprise API",
@@ -736,6 +737,49 @@ const server = http.createServer(async (req, res) => {
         return fs.createReadStream(fullPath).pipe(res);
       } else {
         return sendError(res, 404, "File not found");
+      }
+    }
+
+    // 17. Serve Production Frontend (Render / Cloud Deployment)
+    const DIST_DIR = path.join(__dirname, '..', 'dist');
+    if (fs.existsSync(DIST_DIR) && method === 'GET' && !pathname.startsWith('/api/')) {
+      const mimeMap = {
+        '.html': 'text/html; charset=utf-8',
+        '.js': 'application/javascript; charset=utf-8',
+        '.mjs': 'application/javascript; charset=utf-8',
+        '.css': 'text/css; charset=utf-8',
+        '.json': 'application/json; charset=utf-8',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.gif': 'image/gif',
+        '.svg': 'image/svg+xml',
+        '.ico': 'image/x-icon',
+        '.webp': 'image/webp',
+        '.woff': 'font/woff',
+        '.woff2': 'font/woff2',
+        '.ttf': 'font/ttf'
+      };
+
+      const requestedPath = pathname === '/' ? '/index.html' : pathname;
+      let targetFile = path.normalize(path.join(DIST_DIR, requestedPath));
+
+      if (!targetFile.startsWith(DIST_DIR)) {
+        targetFile = path.join(DIST_DIR, 'index.html');
+      }
+
+      if (fs.existsSync(targetFile) && fs.statSync(targetFile).isFile()) {
+        const ext = path.extname(targetFile).toLowerCase();
+        const contentType = mimeMap[ext] || 'application/octet-stream';
+        res.writeHead(200, { 'Content-Type': contentType });
+        return fs.createReadStream(targetFile).pipe(res);
+      }
+
+      // Single Page Application (SPA) fallback
+      const spaIndex = path.join(DIST_DIR, 'index.html');
+      if (fs.existsSync(spaIndex)) {
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        return fs.createReadStream(spaIndex).pipe(res);
       }
     }
 
