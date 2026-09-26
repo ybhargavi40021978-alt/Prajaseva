@@ -26,8 +26,23 @@
 
 ---
 
+## 🔑 Verified Demo Logins
+
+For immediate evaluation by judges, the following pre-configured role-based credentials are active and verified across both backend architectures (Python FastAPI `:8000` & Node.js Express `:5000`):
+
+| Role | Username / Identifier | Password | Access Scope & Permissions |
+| :--- | :--- | :--- | :--- |
+| **Citizen** | `citizen@ap.gov.in` | `Citizen@123` | Self-Service Portal: Schemes, Grievances, Profile (*Department Services **Denied***) |
+| **Department Officer** | `officer@ap.gov.in` | `Officer@123` | Department Cockpit: Document Scrutiny, Grievance Resolution (*Department Services **Allowed***) |
+| **Administrator** | `admin@ap.gov.in` | `Admin@123` | State Command Center: System Analytics, SLA Oversight (*Full Portal Access*) |
+
+> 💡 **Live Citizen Registration:** Judges can also register any brand-new citizen account directly via the **Register** button on the portal to test real-time database persistence, interactive password eye toggle, and authentic zero-state counting.
+
+---
+
 ## 📑 Table of Contents
-1. [Executive Summary & Problem Statement](#-executive-summary--problem-statement)
+1. [Verified Demo Logins](#-verified-demo-logins)
+2. [Executive Summary & Problem Statement](#-executive-summary--problem-statement)
 2. [Key Innovations & Differentiators](#-key-innovations--differentiators)
 3. [End-to-End System Architecture](#-end-to-end-system-architecture)
 4. [Dual-Backend Engine (Python & Node.js)](#-dual-backend-engine)
