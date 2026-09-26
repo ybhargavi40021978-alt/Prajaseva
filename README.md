@@ -43,10 +43,11 @@ For immediate evaluation by judges, the following pre-configured role-based cred
 ## 📑 Table of Contents
 1. [Verified Demo Logins](#-verified-demo-logins)
 2. [Executive Summary & Problem Statement](#-executive-summary--problem-statement)
-2. [Key Innovations & Differentiators](#-key-innovations--differentiators)
-3. [End-to-End System Architecture](#-end-to-end-system-architecture)
-4. [Dual-Backend Engine (Python & Node.js)](#-dual-backend-engine)
-5. [Core Functional Modules](#-core-functional-modules)
+3. [Key Innovations & Differentiators](#-key-innovations--differentiators)
+4. [End-to-End System Architecture](#-end-to-end-system-architecture)
+5. [Complete Project Flow Structure](#-complete-project-flow-structure)
+6. [Dual-Backend Engine (Python & Node.js)](#-dual-backend-engine)
+7. [Core Functional Modules](#-core-functional-modules)
    - [Citizen Registration & Secure Authentication](#1-citizen-registration--secure-authentication)
    - [Interactive Password Eye System](#2-interactive-password-eye-system)
    - [Welfare Scheme Application Engine](#3-welfare-scheme-application-engine)
@@ -54,11 +55,11 @@ For immediate evaluation by judges, the following pre-configured role-based cred
    - [Role-Based Access Control (RBAC) & Restrictions](#5-role-based-access-control-rbac--security)
    - [Multilingual Engine (8 Indian Languages)](#6-multilingual-engine-8-indian-languages)
    - [Device-Agnostic Responsive Architecture](#7-device-agnostic-responsive-architecture)
-6. [Data Integrity: Zero Fake Data Policy](#-data-integrity-zero-fake-data-policy)
-7. [API Documentation & Swagger UI](#-api-documentation--endpoints)
-8. [Installation, Setup & Judge's Execution Guide](#-installation--execution-guide)
-9. [Judge's Evaluation Checklist & Step-by-Step Demo Walkthrough](#-judges-evaluation-checklist--live-demo-walkthrough)
-10. [Future Roadmap & Scale Readiness](#-future-roadmap)
+8. [Data Integrity: Zero Fake Data Policy](#-data-integrity-zero-fake-data-policy)
+9. [API Documentation & Swagger UI](#-api-documentation--endpoints)
+10. [Installation, Setup & Judge's Execution Guide](#-installation--execution-guide)
+11. [Judge's Evaluation Checklist & Step-by-Step Demo Walkthrough](#-judges-evaluation-checklist--live-demo-walkthrough)
+12. [Future Roadmap & Scale Readiness](#-future-roadmap)
 
 ---
 
@@ -157,6 +158,143 @@ graph TD
     DB --- GRIEVANCES_TB
     DB --- AUDIT_LOGS
 ```
+
+---
+
+## 🔄 Complete Project Flow Structure
+
+The PrajaSeva Portal is structured around **three distinct persona workflows** governed by strict role-based access control, cryptographic verification, and real-time database transactions.
+
+### 📊 End-to-End User Journey & System Interaction Flowchart
+
+```mermaid
+flowchart TD
+    %% Entry & Landing
+    START(["Citizen / User visits Portal"]) --> LANG["Select Preferred Language<br/>(8 Indian Languages Instant i18n)"]
+    LANG --> AUTH_CHOICE{"Has an Account?"}
+
+    %% Registration Flow
+    AUTH_CHOICE -- "No (New Citizen)" --> REG_FORM["Open Citizen Registration Modal<br/>(Full Name, Mobile, Email, State, District, DOB, Address)"]
+    REG_FORM --> REG_PASS["Enter Password with Accessible Eye Toggle<br/>(Show/Hide confirmation check)"]
+    REG_PASS --> REG_VAL{"Front & Backend Validation"}
+    REG_VAL -- "Format / Match Error" --> REG_ERR["Display inline validation errors<br/>(Keep entered details intact)"]
+    REG_ERR --> REG_FORM
+    REG_VAL -- "Valid Details" --> REG_DB[("Save Citizen & Profile to DB<br/>(SQLite / Enterprise JSON)")]
+    REG_DB --> NO_AUTO_LOGIN["SECURITY RULE: No Auto-Login<br/>Return 201 Created"]
+    NO_AUTO_LOGIN --> REG_SUCCESS["Display Success Message:<br/>'Registration successful. Please login...'"]
+    REG_SUCCESS --> REDIRECT_LOGIN["Redirect Citizen to Login Modal"]
+
+    %% Login Flow
+    AUTH_CHOICE -- "Yes / Registered" --> REDIRECT_LOGIN
+    REDIRECT_LOGIN --> LOGIN_FORM["Enter Mobile / Email & Password<br/>(Toggle Password Eye Icon)"]
+    LOGIN_FORM --> AUTH_CHECK{"Backend Authenticate<br/>(PBKDF2/SHA256 Match)"}
+    AUTH_CHECK -- "Invalid Credentials" --> LOGIN_ERR["Show 401 Error:<br/>'Invalid mobile/email or password.'<br/>(Stay on Login Page)"]
+    LOGIN_ERR --> LOGIN_FORM
+    AUTH_CHECK -- "Authenticated" --> JWT_ISSUE["Issue Secure JWT Bearer Token<br/>Identify Role: Citizen / Officer / Admin"]
+
+    %% Role-Based Routing
+    JWT_ISSUE --> ROLE_DISPATCH{"Role Detected"}
+
+    %% 1. Citizen Flow
+    ROLE_DISPATCH -- "Citizen" --> CIT_DASH["Citizen Dashboard<br/>(Zero-State Guarantee: 0 Apps, 0 Grvs)"]
+    CIT_DASH --> CIT_ACTIONS{"Select Action"}
+
+    CIT_ACTIONS --> SCHEME_APPLY["Welfare Schemes Engine"]
+    SCHEME_APPLY --> SCHEME_CALC["Statutory Eligibility Calculator<br/>(Income, Age, Caste bracket)"]
+    SCHEME_CALC --> SCHEME_WIZARD["4-Stage Application Wizard<br/>(Personal, Criteria, Doc Upload, Review)"]
+    SCHEME_WIZARD --> APP_SUBMIT[("Store Application & Init Audit Timeline<br/>Status: 'Under Scrutiny'")]
+    APP_SUBMIT --> PUBLIC_TRACK["Real-Time 4-Stage Tracker<br/>(Submitted → Scrutiny → Inspection → Approval)"]
+
+    CIT_ACTIONS --> GRV_LODGE["Spandana Grievance Engine"]
+    GRV_LODGE --> GRV_SUBMIT["Submit Grievance with Ward/Dept Info"]
+    GRV_SUBMIT --> GRV_TICKET[("Generate Ticket: SPN-2026-XXXX<br/>Start 7-Day Statutory SLA Countdown")]
+
+    CIT_ACTIONS --> RBAC_VIOLATION["Attempts to click 'Department Services'"]
+    RBAC_VIOLATION --> ACCESS_DENIED["SECURITY BARRIER TRIGGERED:<br/>'Access Denied: You do not have permission...'"]
+
+    %% 2. Department Officer Flow
+    ROLE_DISPATCH -- "Department Officer" --> DEPT_DASH["Department Officer Cockpit"]
+    DEPT_DASH --> DEPT_SCRUTINY["Filter Applications by Department<br/>(Review Uploaded Documents)"]
+    DEPT_SCRUTINY --> DEPT_DECISION{"Officer Action"}
+    DEPT_DECISION -- "Approve" --> APP_APPROVED[("Update Status: Approved<br/>Append Timeline & Officer Remarks")]
+    DEPT_DECISION -- "Reject / Re-verify" --> APP_REJECTED[("Update Status: Rejected / Re-query<br/>Append Official Remarks")]
+    DEPT_DASH --> GRV_RESOLVE["Resolve Spandana Grievances<br/>(Close within 7-Day SLA Window)"]
+
+    %% 3. Administrator Flow
+    ROLE_DISPATCH -- "Administrator" --> ADMIN_DASH["PrajaSeva State Command Center"]
+    ADMIN_DASH --> ADMIN_STATS["Monitor State-Wide Analytics<br/>(DBT Disbursements, Total Schemes, Applications)"]
+    ADMIN_DASH --> ADMIN_SLA["SLA Compliance Oversight & Audit Logs"]
+    ADMIN_DASH --> MASTER_SERVICES["Master Department & Scheme Configuration"]
+
+    %% Styles
+    classDef security fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b;
+    classDef success fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#166534;
+    classDef primary fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0369a1;
+    classDef db fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#92400e;
+
+    class ACCESS_DENIED,LOGIN_ERR,REG_ERR security;
+    class APP_SUBMIT,GRV_TICKET,REG_DB db;
+    class CIT_DASH,DEPT_DASH,ADMIN_DASH primary;
+    class APP_APPROVED,REG_SUCCESS success;
+```
+
+---
+
+### 📑 Detailed Flow Breakdown
+
+#### Phase 1: Citizen Registration & Authentication Flow
+1. **Initial Visit & Language Selection:** Citizen enters portal, optionally switches language to any of 8 supported regional languages. The UI translates immediately without page reload.
+2. **Registration:**
+   * Citizen enters Full Name, Mobile, Email, State, District, DOB, Address, and Password with Confirmation.
+   * Clicks the **Password Eye Icon** to verify password accuracy without leaving the field.
+   * Client performs regex validation for 10-digit Indian mobile and email formats.
+   * Backend validates uniqueness and stores hashed credentials and profile data.
+   * **Security Rule:** No automatic login occurs. Citizen receives: *"Registration successful. Please login with your registered credentials."* and is redirected to the Login form.
+3. **Authentication:**
+   * Citizen logs in using registered **Email** or **Mobile Number** and password.
+   * Eye icon is available inside the login password input for easy error prevention.
+   * If credentials fail, backend returns HTTP 401: `"Invalid mobile/email or password."` and citizen remains on login form.
+   * If correct, backend issues a signed JWT Bearer Token, and citizen is navigated to the Citizen Dashboard.
+
+#### Phase 2: Citizen Self-Service & Welfare Application Flow
+1. **Zero-State Dashboard:** A freshly registered citizen sees an authentic clean zero state (`0 Applications`, `0 Grievances`, `0 Notifications`).
+2. **Scheme Exploration & Eligibility Check:**
+   * Citizen browses schemes across 8 departments.
+   * Uses the Statutory Eligibility Calculator to test criteria (annual income limit, social category, student status).
+3. **4-Stage Application Wizard:**
+   * **Stage 1 (Personal Data):** Pre-filled from verified citizen profile.
+   * **Stage 2 (Scheme Details):** Enters scheme-specific data (college, course, landholding).
+   * **Stage 3 (Document Upload):** Uploads Aadhaar, income certificate, or bank passbook (stored with MIME validation).
+   * **Stage 4 (Self-Declaration & Review):** Reviews summary, signs digital declaration, and submits.
+4. **Lifecycle Tracking:** Application enters database with status `Under Scrutiny`. Citizen can track progress via the public 4-stage audit tracker at any time.
+
+#### Phase 3: Spandana Grievance Redressal & 7-Day SLA Flow
+1. **Lodge Grievance:** Citizen specifies grievance category (e.g., Municipal Water Supply, Revenue Title Deed), district, mandal, and description.
+2. **Ticket Generation:** System generates a unique tracking ID (`SPN-2026-XXXX`).
+3. **SLA Clock Initiation:** A statutory 7-Day SLA timer starts automatically in the database.
+4. **Nodal Routing:** The ticket is routed to the respective department officer's scrutiny queue.
+5. **Resolution:** Officer marks the ticket resolved with inspection remarks before the 7-day SLA expiry.
+
+#### Phase 4: Department Officer & Administrative Scrutiny Flow
+1. **Officer Login:** Department Officer logs in with privileged credentials (`officer@ap.gov.in`).
+2. **Department Cockpit:**
+   * Officer views all pending applications and grievances assigned exclusively to their department.
+   * Performs scrutiny on uploaded certificates and enters official field remarks.
+   * Transitions status to `Approved` or `Rejected` with immutable timeline entries.
+3. **Administrator Command Center (`admin@ap.gov.in`):**
+   * High-level portal overview across all 8 departments.
+   * Monitors state-wide DBT funds disbursed, active welfare schemes, and departmental SLA compliance rates.
+   * Manages system audit logs and service directories.
+
+#### Phase 5: Role-Based Access Control (RBAC) Security Barrier
+* **Citizen Restricted Boundary:** If a Citizen attempts to open Department Services or privileged views:
+  * Frontend navigation intercepts request: `window.currentRole === 'citizen'`.
+  * Triggers immediate modal alert:
+    ```text
+    Access Denied
+    You do not have permission to access Department Services.
+    ```
+  * Backend API endpoints under `/api/admin/*` simultaneously enforce JWT role checks and reject unauthorized requests with `HTTP 403 Forbidden`.
 
 ---
 
