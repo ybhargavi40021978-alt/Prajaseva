@@ -1631,3 +1631,24 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHeaderAuth();
   updateLoginRoleLabels();
 });
+
+
+/* ============================================================
+   PRAJASEVA INITIAL 10-SECOND 3D LOADING SCREEN
+   Runs only once for the initial browser load.
+============================================================ */
+(function initPrajaSevaLoadingScreen() {
+  const startLoader = () => {
+    const loader = document.getElementById('prajaseva-loading-screen');
+    if (!loader) return;
+    window.setTimeout(() => {
+      loader.classList.add('is-complete');
+      window.setTimeout(() => loader.remove(), 700);
+    }, 10000);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startLoader, { once: true });
+  } else {
+    startLoader();
+  }
+})();

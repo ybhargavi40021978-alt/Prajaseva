@@ -1668,3 +1668,492 @@ html, body {
     font-size: 1.35rem;
   }
 }
+
+
+/* ============================================================
+   PRAJASEVA 3D TRICOLOR LOADING SCREEN (CLEAN FLAG MIXTURE)
+   Authentic Indian Tricolor 3D Waves • High-Visibility Logo & Typography
+============================================================ */
+.prajaseva-loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  /* Rich, harmonious 3D Indian Flag mixture */
+  background:
+    radial-gradient(ellipse 130% 65% at 50% -5%, rgba(255, 103, 31, 0.95) 0%, rgba(255, 140, 0, 0.85) 30%, transparent 68%),
+    radial-gradient(ellipse 110% 50% at 50% 50%, rgba(255, 255, 255, 0.92) 0%, rgba(240, 248, 255, 0.75) 25%, transparent 60%),
+    radial-gradient(circle 420px at 50% 50%, rgba(0, 0, 128, 0.5) 0%, rgba(6, 3, 141, 0.25) 35%, transparent 70%),
+    radial-gradient(ellipse 130% 65% at 50% 105%, rgba(4, 106, 56, 0.96) 0%, rgba(19, 136, 8, 0.88) 30%, transparent 68%),
+    linear-gradient(172deg, #BF360C 0%, #FF671F 22%, #FFFDF5 44%, #FFFFFF 50%, #F0FFF4 56%, #138808 78%, #003815 100%);
+  background-size: 180% 180%;
+  animation: prajasevaFlagBgMovement 12s ease-in-out infinite alternate;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .75s cubic-bezier(0.4, 0, 0.2, 1), visibility .75s ease;
+}
+
+.prajaseva-loading-screen.is-complete {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* 3D Flag Silk Mesh & Volumetric Light Waves (No bubbles) */
+.prajaseva-flag-3d-bg {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.flag-wave-layer {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  will-change: transform, opacity;
+}
+
+.flag-wave-layer.wave-saffron {
+  top: -15%;
+  left: -10%;
+  width: 120vw;
+  height: 55vh;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255, 140, 0, 0.92), rgba(255, 103, 31, 0.75) 45%, transparent 75%);
+  animation: waveSaffronFloat 8s ease-in-out infinite alternate;
+}
+
+.flag-wave-layer.wave-white {
+  top: 34%;
+  left: -15%;
+  width: 130vw;
+  height: 38vh;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.9), rgba(240, 248, 255, 0.5) 45%, transparent 75%);
+  filter: blur(40px);
+  animation: waveWhiteFloat 7s ease-in-out infinite alternate;
+}
+
+.flag-wave-layer.wave-green {
+  bottom: -15%;
+  left: -10%;
+  width: 120vw;
+  height: 55vh;
+  background: radial-gradient(ellipse at 50% 70%, rgba(19, 136, 8, 0.92), rgba(4, 106, 56, 0.75) 45%, transparent 75%);
+  animation: waveGreenFloat 9s ease-in-out infinite alternate;
+}
+
+.flag-wave-layer.wave-chakra {
+  top: 50%;
+  left: 50%;
+  width: min(75vw, 680px);
+  height: min(75vw, 680px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 0, 128, 0.5) 0%, rgba(41, 121, 255, 0.3) 28%, rgba(6, 3, 141, 0.12) 50%, transparent 70%);
+  filter: blur(30px);
+  animation: chakraPulseGlow 4.5s ease-in-out infinite;
+}
+
+.flag-silk-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.28) 42%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.28) 58%,
+    transparent 80%
+  );
+  mix-blend-mode: overlay;
+  animation: flagSilkSweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Central 3D Interactive Stage */
+.prajaseva-loading-scene {
+  position: relative;
+  z-index: 3;
+  width: min(88vw, 540px);
+  display: grid;
+  place-items: center;
+  perspective: 1200px;
+  animation: prajasevaSceneIn 1s cubic-bezier(.2,.75,.25,1) both;
+}
+
+/* 3D High-Contrast Card with Maximum Readability */
+.prajaseva-loading-card {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(1.8rem, 3.6vw, 2.6rem) clamp(1.6rem, 3.2vw, 2.4rem);
+  border-radius: 30px;
+  /* High contrast background for crystal-clear logo & text */
+  background: rgba(9, 23, 49, 0.84);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  transform-style: preserve-3d;
+  animation: prajaseva3DCardFloat 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  box-shadow:
+    0 35px 80px rgba(0, 10, 30, 0.75),
+    0 0 50px rgba(255, 103, 31, 0.35),
+    0 0 50px rgba(19, 136, 8, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* 3D Tricolor Rim Border */
+.card-3d-tricolor-rim {
+  position: absolute;
+  inset: -3px;
+  border-radius: 33px;
+  padding: 3px;
+  background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 48%, #000080 50%, #FFFFFF 52%, #138808 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+/* Official Logo Presentation - Crisp, Centered & Highly Visible */
+.loading-logo-showcase {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1.25rem;
+  transform: translateZ(45px);
+}
+
+.loading-emblem-halo {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 160, 0, 0.35) 0%, rgba(0, 0, 128, 0.25) 45%, transparent 70%);
+  filter: blur(12px);
+  z-index: 1;
+}
+
+.loading-logo-disc {
+  position: relative;
+  z-index: 2;
+  width: clamp(100px, 16vw, 120px);
+  height: clamp(100px, 16vw, 120px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 32%, #FFFFFF 55%, #F4F6F9 85%, #E2E8F0 100%);
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(255, 255, 255, 0.7),
+    inset 0 2px 4px #FFFFFF,
+    inset 0 -3px 6px rgba(0, 20, 60, 0.15);
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+}
+
+.loading-emblem-img {
+  width: clamp(58px, 10vw, 72px);
+  height: clamp(58px, 10vw, 72px);
+  object-fit: contain;
+  display: block;
+  z-index: 3;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+.chakra-rotating-ring {
+  position: absolute;
+  inset: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  pointer-events: none;
+  animation: chakraSpin 20s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 128, 0.8)) drop-shadow(0 0 3px #2979FF);
+  z-index: 4;
+}
+
+.chakra-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* High-Contrast, Crystal Clear Typography */
+.loading-brand-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: translateZ(52px);
+}
+
+.loading-brand-title {
+  margin: 0;
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  line-height: 1.1;
+  text-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.95),
+    0 0 30px rgba(255, 153, 51, 0.7),
+    0 0 60px rgba(255, 255, 255, 0.4);
+  animation: prajasevaBrandPulse 2.8s ease-in-out infinite;
+}
+
+.loading-brand-tagline {
+  margin: 0.4rem 0 0 0;
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #FFB300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 12px rgba(255, 179, 0, 0.6);
+}
+
+.loading-sub-caption {
+  margin-top: 0.35rem;
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(0.72rem, 1.4vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: #E2E8F0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  opacity: 0.92;
+}
+
+/* 3D Tricolor Line Ribbon */
+.prajaseva-loading-brand-line {
+  margin-top: 1rem;
+  width: clamp(140px, 28vw, 240px);
+  height: 6px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 999px;
+  transform: translateZ(50px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+.prajaseva-loading-brand-line span { flex: 1; }
+.prajaseva-loading-brand-line .ribbon-saffron { background: #FF9933; }
+.prajaseva-loading-brand-line .ribbon-white { background: #FFFFFF; box-shadow: 0 0 8px #FFFFFF; }
+.prajaseva-loading-brand-line .ribbon-green { background: #138808; }
+
+/* 3D Tricolor Live Progress Bar */
+.prajaseva-3d-progress-track {
+  margin-top: 1.25rem;
+  width: clamp(180px, 34vw, 290px);
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+  transform: translateZ(48px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.prajaseva-3d-progress-fill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #FF671F 0%, #FFFFFF 50%, #138808 100%);
+  background-size: 200% 100%;
+  border-radius: 999px;
+  animation: prajasevaProgressFlow 2s linear infinite;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.8), 0 0 12px rgba(255, 103, 31, 0.8);
+}
+
+.progress-glow-head {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+  height: 100%;
+  background: #FFFFFF;
+  filter: blur(2px);
+  box-shadow: 0 0 12px #FFFFFF;
+}
+
+/* 3D Glass Footer Pill */
+.prajaseva-loading-footer {
+  position: absolute;
+  bottom: clamp(24px, 4.5vh, 48px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  background: rgba(8, 20, 44, 0.75);
+  box-shadow:
+    0 12px 35px rgba(0, 10, 30, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  animation: prajasevaFooterIn 1.4s .35s both;
+}
+
+.footer-flag-lights {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-flag-lights span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.footer-flag-lights .dot-saffron {
+  background: #FF9933;
+  box-shadow: 0 0 10px #FF9933, 0 0 18px rgba(255, 153, 51, 0.8);
+  animation: ledPulse 1.2s 0s ease-in-out infinite;
+}
+
+.footer-flag-lights .dot-white {
+  background: #FFFFFF;
+  box-shadow: 0 0 10px #FFFFFF, 0 0 18px rgba(255, 255, 255, 0.9);
+  animation: ledPulse 1.2s 0.4s ease-in-out infinite;
+}
+
+.footer-flag-lights .dot-green {
+  background: #138808;
+  box-shadow: 0 0 10px #138808, 0 0 18px rgba(19, 136, 8, 0.8);
+  animation: ledPulse 1.2s 0.8s ease-in-out infinite;
+}
+
+.footer-msg {
+  color: #FFFFFF;
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(.78rem, 1.6vw, .95rem);
+  font-weight: 700;
+  letter-spacing: .025em;
+  text-shadow: 0 1px 3px rgba(0, 0, 40, 0.8);
+}
+
+/* Keyframes & 3D Motion */
+@keyframes prajasevaFlagBgMovement {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 50% 50%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes waveSaffronFloat {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.88; }
+  100% { transform: translateY(-20px) scale(1.06) rotate(2deg); opacity: 0.98; }
+}
+
+@keyframes waveWhiteFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.85; }
+  100% { transform: translateY(16px) scale(1.05); opacity: 0.95; }
+}
+
+@keyframes waveGreenFloat {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.88; }
+  100% { transform: translateY(20px) scale(1.06) rotate(-2deg); opacity: 0.98; }
+}
+
+@keyframes chakraPulseGlow {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.94); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.95; }
+}
+
+@keyframes flagSilkSweep {
+  0% { transform: translateX(-100%); }
+  50%, 100% { transform: translateX(100%); }
+}
+
+@keyframes prajaseva3DCardFloat {
+  0%, 100% {
+    transform: rotateX(3deg) rotateY(-4deg) translateY(0);
+  }
+  25% {
+    transform: rotateX(-2deg) rotateY(4deg) translateY(-10px);
+  }
+  50% {
+    transform: rotateX(4deg) rotateY(-2deg) translateY(-4px);
+  }
+  75% {
+    transform: rotateX(-1deg) rotateY(3deg) translateY(-12px);
+  }
+}
+
+@keyframes chakraSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes prajasevaBrandPulse {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 153, 51, 0.6), 0 0 50px rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    transform: scale(1.02);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 153, 51, 0.85), 0 0 70px rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes prajasevaProgressFlow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+@keyframes ledPulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.7; }
+  50% { transform: scale(1.25); opacity: 1; }
+}
+
+@keyframes prajasevaSceneIn {
+  from { opacity: 0; transform: scale(.84) translateY(24px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes prajasevaFooterIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .prajaseva-loading-scene { width: 92vw; }
+  .prajaseva-loading-card { padding: 1.6rem 1.2rem; border-radius: 24px; }
+  .loading-brand-title { font-size: clamp(2.2rem, 8vw, 3rem); }
+  .prajaseva-loading-footer { max-width: calc(100vw - 28px); text-align: center; padding: 0.6rem 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prajaseva-loading-screen,
+  .flag-wave-layer,
+  .flag-silk-shimmer,
+  .prajaseva-loading-card,
+  .chakra-rotating-ring,
+  .loading-brand-title,
+  .prajaseva-3d-progress-fill,
+  .footer-flag-lights span {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
