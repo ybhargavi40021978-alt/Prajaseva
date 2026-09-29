@@ -11,22 +11,37 @@ function getBackendCandidates() {
   if (envApiUrl) {
     list.push({ url: envApiUrl.replace(/\/+$/, ''), name: 'Configured API (VITE_API_URL)' });
   }
-  if (typeof window !== 'undefined' && window.location) {
-    const loc = window.location;
-    if (loc.origin && loc.origin !== 'null') {
-      list.push({ url: loc.origin, name: 'Same-Origin Gateway' });
-    }
-    if (loc.hostname && loc.hostname !== 'localhost' && loc.hostname !== '127.0.0.1') {
-      list.push({ url: `${loc.protocol}//${loc.hostname}:8000`, name: 'Python FastAPI (LAN)' });
-      list.push({ url: `${loc.protocol}//${loc.hostname}:5000`, name: 'Node.js Express (LAN)' });
-    }
+
+  const isBrowser = typeof window !== 'undefined' && window.location;
+  const loc = isBrowser ? window.location : null;
+  const isLocalHost = loc ? (loc.hostname === 'localhost' || loc.hostname === '127.0.0.1') : true;
+
+  // 1. Same-Origin Gateway (production, unified Node server, or reverse proxy)
+  if (loc && loc.origin && loc.origin !== 'null') {
+    list.push({ url: loc.origin, name: 'Same-Origin Gateway' });
   }
-  list.push(
-    { url: 'http://127.0.0.1:8000', name: 'Python FastAPI (:8000)' },
-    { url: 'http://127.0.0.1:5000', name: 'Node.js Express (:5000)' },
-    { url: 'http://localhost:8000', name: 'Python FastAPI (:8000)' },
-    { url: 'http://localhost:5000', name: 'Node.js Express (:5000)' }
-  );
+
+  // 2. Cached backend from previous successful connection
+  const cachedUrl = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('prajaseva_active_backend_url') : null;
+  if (cachedUrl) {
+    list.push({ url: cachedUrl, name: 'Cached Active Backend' });
+  }
+
+  // 3. Localhost ports only when running locally
+  if (isLocalHost) {
+    const host = loc ? loc.hostname : 'localhost';
+    list.push(
+      { url: `${loc ? loc.protocol : 'http:'}//${host}:5000`, name: 'Node.js Express (:5000)' },
+      { url: `${loc ? loc.protocol : 'http:'}//${host}:8000`, name: 'Python FastAPI (:8000)' }
+    );
+  } else if (loc && loc.hostname) {
+    // LAN development
+    list.push(
+      { url: `${loc.protocol}//${loc.hostname}:5000`, name: 'Node.js Express (LAN :5000)' },
+      { url: `${loc.protocol}//${loc.hostname}:8000`, name: 'Python FastAPI (LAN :8000)' }
+    );
+  }
+
   const seen = new Set();
   return list.filter(c => {
     if (seen.has(c.url)) return false;
@@ -50,7 +65,7 @@ export function setAuthToken(token) {
   }
 }
 
-// Auto-detect active backend with instant Promise.any resolution
+// Auto-detect active backend with intelligent sequential priority and fast failover
 let detectPromise = null;
 
 export async function detectBackend() {
@@ -59,9 +74,9 @@ export async function detectBackend() {
 
   detectPromise = (async () => {
     const candidates = getBackendCandidates();
-    const probe = async (candidate) => {
+    const probe = async (candidate, timeoutMs = 600) => {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 600);
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
       try {
         const res = await fetch(`${candidate.url}/api/health`, {
           signal: controller.signal,
@@ -81,12 +96,37 @@ export async function detectBackend() {
     };
 
     try {
-      // Promise.any resolves as soon as ANY healthy backend responds (typically <5ms)
-      const connected = await Promise.any(candidates.map(probe));
-      activeBackend = connected;
-      isOfflineFallback = false;
-      console.log(`[PrajaSeva API] Connected to ${activeBackend.name}`);
-      return activeBackend;
+      // Step 1: Check primary candidate (same-origin or configured API) first.
+      // If it answers, resolve immediately without probing inactive ports.
+      if (candidates.length > 0) {
+        try {
+          const primary = await probe(candidates[0], 400);
+          activeBackend = primary;
+          if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('prajaseva_active_backend_url', activeBackend.url);
+          }
+          isOfflineFallback = false;
+          console.log(`[PrajaSeva API] Connected to ${activeBackend.name}`);
+          return activeBackend;
+        } catch (_) {
+          // Primary not responding, fall through to remaining candidates
+        }
+      }
+
+      // Step 2: Probe remaining candidates
+      const remaining = candidates.slice(1);
+      if (remaining.length > 0) {
+        const connected = await Promise.any(remaining.map(c => probe(c, 700)));
+        activeBackend = connected;
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('prajaseva_active_backend_url', activeBackend.url);
+        }
+        isOfflineFallback = false;
+        console.log(`[PrajaSeva API] Connected to ${activeBackend.name}`);
+        return activeBackend;
+      }
+
+      throw new Error('No candidate reachable');
     } catch (e) {
       isOfflineFallback = true;
       activeBackend = null;
